@@ -1,0 +1,64 @@
+// AED1d.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+//ARITMETICA DE PUNTEROS 
+
+#include <iostream>
+
+int main()
+{
+    //tarea1 class´pila 
+    class pila {
+    public:
+        int elem[10] = {};
+        int* top = &elem[0];
+        int* ini = &elem[0];
+        bool push(int a) { //si logra hacer el push devuelve true 
+            if ((ini - top) < 8) {
+                *top = a;
+                top++;
+                return true;
+            }
+            else if((ini-top) == 8){
+                *top = a;
+                return true;
+            }
+            else
+                return false;
+            
+        } 
+        bool pop(int& a){ // al reves devuelve el ultimo y el top regresa
+            if ((ini - top)>0) {
+                a = *top;
+                top--;
+                return true;
+            }
+            else if ((ini - top) == 0) {
+                a = *top;
+                return true;
+            }
+            else
+                return false;
+        }
+    };
+
+    pila p;
+    for (int i = 0; i <= 16; i++) {      
+        if (p.push(i)) {
+            std::cout << p.elem[i] << "\n";
+        }
+        else {
+            std::cout <<"ono \n";
+        }
+        
+    }
+    for (int i =9; i >= 0; i--) {
+        int a;
+        if (p.pop(a)) {
+            std::cout << a << "\n";
+        }
+
+    }
+
+    //tarea2 array de n elemntos int ordenados, busqueda binaria 
+    bool BinBus(int* ini, int* fin, int* &pos, int key); //si encuentra el elemnto devuelve true y pos su direccion, sino false, 
+
+}
