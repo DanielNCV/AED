@@ -1,0 +1,67 @@
+// Elementor.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+// ELEMENTOR debe contener nodos con qo elementos que apunten aotro nodo 
+
+#include <iostream>
+
+class pnodo {
+public:
+    int ar[4];
+    pnodo* next;
+};
+class elementor {
+public:
+    pnodo nodo;
+    int* ini;
+    int* fin; // solo hay un fin
+    elementor() {
+        ini = &nodo.ar[0];
+        fin = NULL;
+    }
+    void add(int n){
+        int* pos;
+        if ( !find(n, pos) && fin == NULL) { //
+            *ini = n;
+            fin = ini;
+        }
+        else if (!find(n,pos) && fin) {
+            if (pos == fin && fin != &nodo.ar[3]) {
+                fin++;
+                *fin = n;
+            }
+            if (pos )
+        }
+
+    }
+    void del() {}
+    void print() {}
+    
+    bool find(int n, int *& pos) {
+        int* p = ini;
+        while (p < fin && *p <= n) {
+            if (*p == n) {
+                pos = p;
+                return true;
+            }
+            else {
+                p++;
+            }
+        }
+        if (*p != n) {
+            p = NULL;
+            return false;
+        }
+        else {
+            pos == p;
+            return true;
+        }
+            
+    }
+
+
+};
+int main()
+{
+    elementor e;
+    int* p;
+    std::cout << e.find(60,p);
+}
