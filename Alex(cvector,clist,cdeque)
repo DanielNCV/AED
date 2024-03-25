@@ -53,7 +53,20 @@ public:
         }
     }
     void pop_front(int& a) {
-
+        if (cola) {
+            if (cola == ar) {
+                a = *cola;
+                cola = NULL;
+            }
+            else {
+                a = *ar;
+                int n;
+                for (int* p = ar, *q = ar+1;p <=cola; p++,q++) {
+                    *p = *q;
+                }
+                cola--;
+            }
+        }
     }
     int& operator []( int n ) {
         int b = *(ar + n);
@@ -70,14 +83,21 @@ int main()
     v.push_back(8);
     v.push_front(3);
 
-
-
     std::cout << v[0] << "\n";
     std::cout << v[1] << "\n";
     std::cout << v[2] << "\n";
     std::cout << v[3] << "\n";
     std::cout << v[4] << "\n";
     std::cout << v[5] << "\n";
+    v.pop_front(b);
+    
+    std::cout << v[0] << "\n";
+    std::cout << v[1] << "\n";
+    std::cout << v[2] << "\n";
+    std::cout << v[3] << "\n";
+    std::cout << v[4] << "\n";
+    std::cout << v[5] << "\n";
+    std::cout << b << "\n";
 
 
 
