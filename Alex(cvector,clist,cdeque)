@@ -1,0 +1,85 @@
+#include <iostream>
+class Cvector {
+public:
+    int* ar;
+    int* cola;
+    int* fin;
+    Cvector(int n) {
+        ar = new int[n];
+        fin = (ar + n);
+        cola = NULL;
+    }
+    void push_back(int n ) {
+        if (cola == NULL) {
+            *ar = n;
+            cola = ar;
+        }
+        else if (cola < fin) {
+            cola++;
+            *cola = n;            
+        }
+        else
+            return;
+            
+    }
+    void pop_back(int &a) {
+        if (cola) {
+            if (cola == ar) {
+                a = *cola;
+                cola = NULL;
+            }
+            else {
+                a = *cola;
+                cola--;
+            }
+        }
+        else
+            return;           
+    }
+    void push_front(int n) {
+        if (!cola) {
+            *ar = n;
+            cola = ar;
+        }
+        else {
+            if (cola != fin) {
+                int a ;
+                for (int* p = ar;p <= fin; p++) {
+                    a = *p;
+                    *p = n;
+                    n = a;
+                }
+            }
+        }
+    }
+    void pop_front(int& a) {
+
+    }
+    int& operator []( int n ) {
+        int b = *(ar + n);
+        return *(ar + n);
+    }
+};
+
+int main()
+{
+    int b;
+    Cvector v(6);
+    v.push_back(2);
+    v.push_back(4);
+    v.push_back(8);
+    v.push_front(3);
+
+
+
+    std::cout << v[0] << "\n";
+    std::cout << v[1] << "\n";
+    std::cout << v[2] << "\n";
+    std::cout << v[3] << "\n";
+    std::cout << v[4] << "\n";
+    std::cout << v[5] << "\n";
+
+
+
+
+}
