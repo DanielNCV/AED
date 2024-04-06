@@ -1,7 +1,55 @@
 // AED1d.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //ARITMETICA DE PUNTEROS 
-
 #include <iostream>
+
+ class pila {
+ public:
+     int elem[10] = {};
+     int* top = NULL;
+     int* ini = &elem[0];
+     bool push(int a) { //si logra hacer el push devuelve true
+         if (top == NULL) {
+             top = &elem[0];
+             *top = a;
+             return true;
+         }
+         else if ((top-ini) < 9 ) {
+             top++;
+             *top = a;
+             return true;
+         }
+         else {
+             std::cout << "Pila llena \n";
+             return false;
+         }
+     }
+     bool pop(int& a) { // al reves devuelve el ultimo y el top regresa
+         if (ini < top) {
+             a = *top;
+             top--;
+             return true;
+         }
+         else if (ini == top) {
+             a = *top;
+             top = NULL;
+             return true;
+         }
+         else {
+             std::cout << "Pila vacia \n";
+             return false;
+         }
+     }
+     void print( ) {
+         int* tmp = ini;
+         while (tmp <= top) {
+             std::cout << *tmp << "\n";
+             tmp++;
+         }
+
+     }
+ };
+    
+
 bool BinBus(int* ini, int* fin, int*& pos, int key) { //si encuentra el elemnto devuelve true y pos su direccion, sino false
     int* m = (fin - ini) / 2 + ini;
     while (m > ini && *m != key) {
@@ -18,83 +66,48 @@ bool BinBus(int* ini, int* fin, int*& pos, int key) { //si encuentra el elemnto 
         pos = NULL;
         return false;
     }
-        
-
 }
+
+
 int main()
 {
     //tarea1 class pila 
-
     /*
-    class pila {
-    public:
-        int elem[10] = {};
-        int* top = NULL;
-        int* ini = &elem[0];
-        bool push(int a) { //si logra hacer el push devuelve true 
-            if (top == NULL) {          
-                top = &elem[0];
-                *top = a;
-                return true;
-            }
-            else if ((top-ini) < 9 ) { 
-                top++;
-                *top = a;
-                return true;
-            }
-            else
-                return false;
-
-        }
-        bool pop(int& a) { // al reves devuelve el ultimo y el top regresa
-            if (ini < top) {
-                a = *top;
-                top--;
-                return true;
-            }
-            else if (ini == top) {
-                a = *top;
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        void print( ) {
-            int* tmp = ini;
-            while (tmp <= top) {
-                std::cout << *tmp;
-                tmp++;
-            }
-        }
-    };
-
     pila p;
     int q = 0;
-    for (int i = 1; i <= 11; i++) {
+    for (int i = 1; i <= 12; i++) {
         p.push(i);
     }
     p.print();
 
-    for (int i = 1; i <= 14; i++) {
+    for (int i = 1; i <= 12; i++) {
         int y;
-
         p.pop(y);
-        std::cout << y << "\n";
     }
     p.print();
     */
 
-
-
     //tarea2 array de n elemntos int ordenados, busqueda binaria 
+    
+    
+    int ar[11] = { 1,2,3,4,5,6,7,8,9,10,11 };
+    int* r = &ar[0];
+    int* s = &ar[11];
+    int* pos;
+    
 
-    int ar[10] = { 1,2,3,4,5,6,7,8,9,10 };
-    int* p = &ar[0];
-    int* q = &ar[10];
-    int *pos;
-    BinBus(p, q, pos, 0);
+    //primer elemento
+    BinBus(r, s, pos, 1);
     std::cout << *pos << "\n";
-
+    //elemento medio
+    BinBus(r, s, pos, 6);
+    std::cout << *pos << "\n";
+    //ultimo elemento
+    BinBus(r, s, pos, 11);
+    std::cout << *pos << "\n";
+    //elemento fuera
+    BinBus(r, s, pos, 123);
+    std::cout << *pos << "\n";
+    
 
 }
