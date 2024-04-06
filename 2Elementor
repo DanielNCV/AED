@@ -1,48 +1,98 @@
-// Elementor.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-// ELEMENTOR debe contener nodos con qo elementos que apunten aotro nodo 
+// Elementor1.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+//
 
 #include <iostream>
 
-class pnodo {
+class nodo {
 public:
     int ar[4];
-    pnodo* next;
+    nodo* next;
 };
 class elementor {
 public:
-    pnodo nodo;
+    nodo* pnodo;
     int* ini;
     int* fin; // solo hay un fin
     elementor() {
-        ini = &nodo.ar[0];
+
+        ini = &pnodo->ar[0];
         fin = NULL;
     }
-    void add(int n){
-        int* pos;
-        if ( !find(n, pos) && fin == NULL) { //
+    void add(int n) {          
+        if ( fin == NULL) { //
             *ini = n;
             fin = ini;
         }
-        else if (!find(n,pos) && fin) {
-            if (pos == fin && fin != &nodo.ar[3]) {
-                fin++;
-                *fin = n;
+        else if ( fin) {
+            
+            if (n > *fin) {//caso1
+                int a;
+                nodo* p = pnodo;
+                for (;p != NULL;p = p->next) {
+                    for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {//caso1.a
+                        if (q == fin) {
+                            //caso1.b
+                            p->next = new nodo;
+                            p->next->ar[0] = a;
+                            return;
+                        }
+                        a = *q;
+                        *q = n;
+                        n = a;
+                        
+                    }                    
+                }
             }
-            if (pos )
+            else {//caso2
+                int a;
+                int* pos;
+                nodo* p = pnodo;
+                for (;p != NULL;p = p->next) {
+                    for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {
+                        if (n < *q) {
+                            pos = q;
+                        }
+                        else {
+                            if (q == fin) {
+                                //caso2.b
+                                p->next = new nodo;
+                                p->next->ar[0] = a;
+                                return;
+                            }
+                            a = *q;//caso2.a
+                            *q = n;
+                            n = a;
+                            
+                        }
+                    }
+                }
+            }
+            
+            
         }
 
     }
     void del() {}
-    void print() {}
-    
-    bool find(int n, int *& pos) {
-        int* p = ini;
-        while (p < fin && *p <= n) {
+    void print() {
+        nodo* p = pnodo;
+        for (;p != NULL;p = p->next) {
+            for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {
+                std::cout << *q << " ";
+            }
+            std::cout << " \n";
+        }
+        return;
+    }
+
+    bool find(int n, int*& pos, int*i, int*f) {
+        int* p = i;
+        while (p < f && *p <= n) {
             if (*p == n) {
                 pos = p;
                 return true;
             }
             else {
+                pos = p;
                 p++;
             }
         }
@@ -54,7 +104,7 @@ public:
             pos == p;
             return true;
         }
-            
+
     }
 
 
@@ -62,6 +112,11 @@ public:
 int main()
 {
     elementor e;
-    int* p;
-    std::cout << e.find(60,p);
+    e.add(3);
+    e.add(7);
+    e.add(8);
+    e.add(9);
+    e.print();
+
+
 }
