@@ -1,0 +1,87 @@
+
+#include <iostream>
+void asc(int* ini, int*& fin, int n, int& aux) {
+    if (fin != NULL) {
+        if (n >= *fin) {
+            fin++;
+            *fin = n;
+        }
+        else
+            while (ini <= fin) {
+                if (n < *ini) {
+                    fin++;
+                    while (ini <= fin) {
+                        int a = *ini;
+                        *ini = n;
+                        aux = *ini;
+                        n = a;
+                        ini++;
+                    }
+                }
+                ini++;
+            }
+    }
+    else {
+        fin = ini;
+        *fin = n;
+    }
+}
+class nodo {
+public:
+    int ar[4] = { };
+    nodo* next = NULL;
+
+};
+class elementor {
+public:
+    nodo* pnodo;
+    int* ini;
+    int* fin; // solo hay un fin
+    int k=4;
+    elementor() {
+        pnodo = new nodo;
+        ini = pnodo->ar;
+        fin = NULL;
+        k = 4;
+    }
+    void add(int n) {
+        if (fin)
+            if (n < *fin) {
+                while (pnodo) {
+                    if (*fin > n) {
+                        int x;
+                        asc(&pnodo->ar[0], fin, n, x);
+                    }
+                    pnodo = pnodo->next;
+                }
+            }
+            else
+                return;
+        else {
+            *ini = n;
+            fin = ini;
+        }                
+    }
+    void print() {
+        nodo* p = pnodo;
+        for (;p != NULL;p = p->next) {
+            for (int* q = &(p->ar[0]);q <= &p->ar[3] && q <= fin;q++) {
+                std::cout << *q << " ";
+            }
+            std::cout << " \n";
+        }
+        return;
+    }
+};
+int main()
+{
+    elementor e;
+    e.add(15);
+    e.add(14);
+
+
+    e.print();
+
+
+    std::cout << "Hello World!\n";
+}
