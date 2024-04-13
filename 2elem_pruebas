@@ -1,13 +1,18 @@
-
 #include <iostream>
-void asc(int* ini, int*& fin, int n, int& aux) {
+
+void asc(int* ini, int*&fin,int n, int&aux) { 
+    //ini es el inicio de mi nodo, sera del ultimo array o uno anterior al array que tenga un inicio mayor al n 
+    //fin es el ultimo elemento que tenga el ultimo nodo
+    //n el numero a ingresar
+    // t es el tamano de array de cada nodo
     if (fin != NULL) {
         if (n >= *fin) {
-            fin++;
-            *fin = n;
+             fin++;
+             *fin = n;
+
         }
         else
-            while (ini <= fin) {
+            while (ini < fin) {
                 if (n < *ini) {
                     fin++;
                     while (ini <= fin) {
@@ -15,7 +20,7 @@ void asc(int* ini, int*& fin, int n, int& aux) {
                         *ini = n;
                         aux = *ini;
                         n = a;
-                        ini++;
+                        ini++;                   
                     }
                 }
                 ini++;
@@ -26,62 +31,45 @@ void asc(int* ini, int*& fin, int n, int& aux) {
         *fin = n;
     }
 }
-class nodo {
-public:
-    int ar[4] = { };
-    nodo* next = NULL;
-
-};
-class elementor {
-public:
-    nodo* pnodo;
-    int* ini;
-    int* fin; // solo hay un fin
-    int k=4;
-    elementor() {
-        pnodo = new nodo;
-        ini = pnodo->ar;
-        fin = NULL;
-        k = 4;
-    }
-    void add(int n) {
-        if (fin)
-            if (n < *fin) {
-                while (pnodo) {
-                    if (*fin > n) {
-                        int x;
-                        asc(&pnodo->ar[0], fin, n, x);
-                    }
-                    pnodo = pnodo->next;
-                }
-            }
-            else
-                return;
-        else {
-            *ini = n;
-            fin = ini;
-        }                
-    }
-    void print() {
-        nodo* p = pnodo;
-        for (;p != NULL;p = p->next) {
-            for (int* q = &(p->ar[0]);q <= &p->ar[3] && q <= fin;q++) {
-                std::cout << *q << " ";
-            }
-            std::cout << " \n";
+void pop(int* ini, int*& fin, int& n) {
+    if (fin != NULL) {
+        if (ini != fin) {
+            n = *fin;
+            fin--;
         }
-        return;
+        else {
+            n = *fin ;
+            fin = NULL;
+        }
     }
-};
+    else
+        return;
+}
 int main()
-{
-    elementor e;
-    e.add(15);
-    e.add(14);
+{   
+    int arr[8] = {};
+    int* p = &arr[0];
+    int* q = NULL;
+    int a;
+    int tam = 8;
+    asc(p, q, 5,a);
+    asc(p, q, 6,a);
+    asc(p, q, 4,a);
+    asc(p, q, 8,a);
+    asc(p, q, 7,a);
+    asc(p, q, 3,a);
+    asc(p, q, 1,a);
+    asc(p, q, 9,a);
+    asc(p, q, 0, a);
 
 
-    e.print();
+    for (int* r = &arr[0];r <= q;r++) {
+        std::cout << *r << "\n";
+        std::cout << a << "\n";
 
-
-    std::cout << "Hello World!\n";
+    }
+    for (int i = 0;i <=7;i++) {
+        pop(p, q, a);
+        std::cout << a << "\n";
+    }
 }
