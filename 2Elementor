@@ -1,122 +1,88 @@
-// Elementor1.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
 
 #include <iostream>
-
+void asc(int* ini, int*& fin, int n, int& aux) {
+    if (fin != NULL) {
+        if (n >= *fin) {
+            fin++;
+            *fin = n;
+        }
+        else
+            while (ini <= fin) {
+                if (n < *ini) {
+                    fin++;
+                    while (ini <= fin) {
+                        int a = *ini;
+                        *ini = n;
+                        aux = *ini;
+                        n = a;
+                        ini++;
+                    }
+                }
+                ini++;
+            }
+    }
+    else {
+        fin = ini;
+        *fin = n;
+    }
+}
 class nodo {
 public:
-    int ar[4];
-    nodo* next;
+    int ar[4] = { };
+    nodo* next = NULL;
+
 };
 class elementor {
 public:
     nodo* pnodo;
     int* ini;
     int* fin; // solo hay un fin
+    int k=4;
     elementor() {
-
-        ini = &pnodo->ar[0];
+        pnodo = new nodo;
+        ini = pnodo->ar;
         fin = NULL;
+        k = 4;
     }
-    void add(int n) {          
-        if ( fin == NULL) { //
+    void add(int n) {
+        if (fin)
+            if (n < *fin) {
+                while (pnodo) {
+                    if (*fin > n) {
+                        int x;
+                        asc(&pnodo->ar[0], fin, n, x);
+                    }
+                    pnodo = pnodo->next;
+                }
+            }
+            else
+                return;
+        else {
             *ini = n;
             fin = ini;
-        }
-        else if ( fin) {
-            
-            if (n > *fin) {//caso1
-                int a;
-                nodo* p = pnodo;
-                for (;p != NULL;p = p->next) {
-                    for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {//caso1.a
-                        if (q == fin) {
-                            //caso1.b
-                            p->next = new nodo;
-                            p->next->ar[0] = a;
-                            return;
-                        }
-                        a = *q;
-                        *q = n;
-                        n = a;
-                        
-                    }                    
-                }
-            }
-            else {//caso2
-                int a;
-                int* pos;
-                nodo* p = pnodo;
-                for (;p != NULL;p = p->next) {
-                    for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {
-                        if (n < *q) {
-                            pos = q;
-                        }
-                        else {
-                            if (q == fin) {
-                                //caso2.b
-                                p->next = new nodo;
-                                p->next->ar[0] = a;
-                                return;
-                            }
-                            a = *q;//caso2.a
-                            *q = n;
-                            n = a;
-                            
-                        }
-                    }
-                }
-            }
-            
-            
-        }
-
+        }                
     }
-    void del() {}
     void print() {
         nodo* p = pnodo;
         for (;p != NULL;p = p->next) {
-            for (int* q = &(p->ar[0]);q <= &(p->ar[3]);q++) {
+            for (int* q = &(p->ar[0]);q <= &p->ar[3] && q <= fin;q++) {
                 std::cout << *q << " ";
             }
             std::cout << " \n";
         }
         return;
     }
-
-    bool find(int n, int*& pos, int*i, int*f) {
-        int* p = i;
-        while (p < f && *p <= n) {
-            if (*p == n) {
-                pos = p;
-                return true;
-            }
-            else {
-                pos = p;
-                p++;
-            }
-        }
-        if (*p != n) {
-            p = NULL;
-            return false;
-        }
-        else {
-            pos == p;
-            return true;
-        }
-
-    }
-
-
 };
 int main()
 {
     elementor e;
-    e.add(3);
-    e.add(7);
-    e.add(8);
-    e.add(9);
+    e.add(15);
+    e.add(14);
+
+
     e.print();
 
 
+    std::cout << "Hello World!\n";
 }
+
