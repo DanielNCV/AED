@@ -73,7 +73,62 @@ public:
         return *(ar + n);
     }
 };
+class Deque {
+public:
+    Deque() {
+        m = new int* [k1]; // tam del mapa
+        i = m + (5 - 1) / 2;
+        *i = new int[k2]; // tam de hijos
+        f = i;
+        ini = NULL;
+        fin = NULL;
+    }
+    int k1 = 5;
+    int k2 = 5;
+    int** m;
+    int** i;
+    int** f;
+    int* ini;
+    int* fin;
 
+    void push_back(int n) {         
+        if (ini) {
+            if (fin!= *f +(5-1)) {
+                fin++;
+                *fin = n;
+            }
+            else {
+                if (f != m + k1 - 1) {
+                    f++;
+                    *f = new int[k2];
+                    fin = *f;
+                    *fin = n;
+                }
+                else {
+                    k1 = k1 * 2;
+                    int** tmp = new int* [k1];
+                    int** pp = tmp + (k1) / 2;
+                    int** t;
+                    for (t = i;t <= f;t++, pp++)
+                        *pp = *t;
+                    m = tmp;
+                    i = tmp + (k1) / 2;
+                    f = pp - 1;
+                    *f = new int[k2];
+                    fin = *f;
+                    *fin = n;
+
+                }
+            }
+        }
+        else {
+            ini = *i + (5 - 1)/2 ;
+            *ini = n;
+            fin = ini;
+        }
+        
+    }
+};
 int main()
 {
     int b;
