@@ -1,31 +1,5 @@
-
 #include <iostream>
-void asc(int* ini, int*& fin, int n, int& aux) {
-    if (fin != NULL) {
-        if (n >= *fin) {
-            fin++;
-            *fin = n;
-        }
-        else
-            while (ini <= fin) {
-                if (n < *ini) {
-                    fin++;
-                    while (ini <= fin) {
-                        int a = *ini;
-                        *ini = n;
-                        aux = *ini;
-                        n = a;
-                        ini++;
-                    }
-                }
-                ini++;
-            }
-    }
-    else {
-        fin = ini;
-        *fin = n;
-    }
-}
+
 class nodo {
 public:
     int ar[4] = { };
@@ -37,7 +11,7 @@ public:
     nodo* pnodo;
     int* ini;
     int* fin; // solo hay un fin
-    int k=4;
+    int k = 4;
     elementor() {
         pnodo = new nodo;
         ini = pnodo->ar;
@@ -45,27 +19,136 @@ public:
         k = 4;
     }
     void add(int n) {
-        if (fin)
-            if (n < *fin) {
-                while (pnodo) {
-                    if (*fin > n) {
-                        int x;
-                        asc(&pnodo->ar[0], fin, n, x);
+        if (fin) {
+            nodo* p = pnodo;
+            while (p) {
+                int* q = &p->ar[0];
+                int a;
+                if (p->next == NULL && fin != &p->ar[3]) {
+                    if (n < *fin) {
+                        while (q <= fin) {
+                            if (n < *q) {
+                                fin++;
+                                while (q <= fin) {
+                                    a = *q;
+                                    *q = n;
+                                    n = a;
+                                    q++;
+                                }
+                            }
+                            q++;
+                        }
                     }
-                    pnodo = pnodo->next;
+                    else {
+                        fin++;
+                        *fin = n;
+                    }
                 }
+                else if (p->next == NULL && fin == &p->ar[3]) {
+                    while (q <= fin) {
+                        if (n < *q) {
+                            while (q <= fin) {
+                                a = *q;
+                                *q = n;
+                                n = a;
+                                q++;
+                            }
+                        }
+                        q++;
+                    }
+                    p->next = new nodo;
+                    fin = &p->next->ar[0];
+                    *fin = n;
+                    return;
+                }
+                else if (p->next != NULL) {
+                    while (q <= &p->ar[3]) {
+                        if (n < *q) {
+                            while (q <= &p->ar[3]) {
+                                a = *q;
+                                *q = n;
+                                n = a;
+                                q++;
+                            }
+                        }
+                        q++;
+                    }
+                }
+                p = p->next;
             }
-            else
-                return;
+        }
         else {
             *ini = n;
             fin = ini;
-        }                
+        }
+    }  
+    void del(int n) {
+        nodo* p = pnodo;
+        if (fin) {
+            nodo* p = pnodo;
+            while (p) {
+                int* q = &p->ar[0];
+                if (p->next == NULL && fin != &p->ar[0]) {
+                    while (q <= fin) {
+                        if (n == *q) {
+                            int* r = q + 1;
+                            while (q <= fin) {
+                                *q = *r;
+                                q++;
+                                r++;
+                            }
+                            fin--;
+                        }
+                        q++;
+                    }
+                }
+                else if (p->next == NULL && fin == &p->ar[0]) {
+                    fin = NULL;
+                }
+                else if (p->next != NULL) {
+                    while (q <= &p->ar[3]) {
+                        if (n == *q) {
+                            int* r = q + 1;
+                            while (q < &p->ar[3]) {
+                                *q = *r;
+                                q++;
+                                r++;
+                            }
+                            if (q == &p->ar[3]) {
+                                if (p->next->next) {
+                                    r = &p->next->ar[0];
+                                    *q = *r;
+                                    n = *r;
+                                }
+                                else {
+                                    if (fin == &p->next->ar[0]) {
+                                        r = &p->next->ar[0];
+                                        *q = *r;
+                                        delete fin;
+                                        fin = q;
+                                        p->next = NULL;
+                                        return;
+                                    }
+                                    else {
+                                        r = &p->next->ar[0];
+                                        *q = *r;
+                                        n = *r;
+                                    }
+                                }
+                            }
+                        }
+                        q++;
+                    }
+                }
+                p = p->next;
+            }
+        }
+
     }
     void print() {
         nodo* p = pnodo;
-        for (;p != NULL;p = p->next) {
-            for (int* q = &(p->ar[0]);q <= &p->ar[3] && q <= fin;q++) {
+        for (; p != NULL; p = p->next) {
+            for (int* q = &p->ar[0]; q <= &p->ar[3]; q++) {
                 std::cout << *q << " ";
             }
             std::cout << " \n";
@@ -76,10 +159,15 @@ public:
 int main()
 {
     elementor e;
-    e.add(15);
-    e.add(14);
 
-
+    for (int i = 1; i <= 500; i++) {
+        e.add(i);
+    }
+    e.print();
+    for (int i = 1; i <= 500; i++) {
+        if (i % 2)
+            e.del(i);
+    }
     e.print();
 
 
