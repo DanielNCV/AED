@@ -1,0 +1,154 @@
+#include <iostream>
+class cola1 {
+public:
+    int p[10];
+    int* h = NULL;
+    int* t = NULL;
+    bool push(int n){
+        if (h) {
+            if (h <= t && t != &p[9]) {
+                t++;
+                *t = n;
+                return true;
+            }
+            else if(h <= t && t == &p[9]){
+                if (h != p) {
+                    t = p;
+                    *t = n;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (t < h) {
+                if (h = t + 1) {
+                    return false;
+                }
+                else {
+                    t++;
+                    *t = n;
+                    return true;
+                }
+            }     
+        }
+        else {
+            h = p;
+            t = h;
+            *h = n;
+            return true;
+        }
+    }
+    bool pop(int& n) {
+        if (h) {
+            if (h == t) {
+                n = *h;
+                h = NULL;
+                t = NULL;
+            }
+            else if (h < t) {
+                n = *h;
+                h++;
+            }
+            else if (t < h) {
+                if (h == &p[9]) {
+                    n = *h;
+                    h = p;
+                }
+                else {
+                    n = *h;
+                    h++;
+                }
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    void print() {
+        if(h<=t){
+            for (int* tmp = h;tmp <= t;tmp++)
+                std::cout << *tmp;
+        }
+        else if (t < h) {
+            for (int* tmp = h;tmp <= &p[9];tmp++)
+                std::cout << *tmp;
+            for (int* tmp = &p[0];tmp <= t;tmp++)
+                std::cout << *tmp;
+        }
+    }
+};
+
+class node {
+public:
+    node(int n) {
+        v = n;
+        next = NULL;
+    }
+    int v;
+    node* next;
+};
+class pila{
+public:
+    node* top=NULL;
+    void push(int n) {       
+        node* tmp = new node(n);
+        tmp->next = top;        
+        top = tmp;
+    }
+    void pop(int& n) {
+        n = top->v;
+        node* tmp = top->next;
+        delete top;
+        top = tmp;
+    }
+    void print() {
+        for (node* t = top;t;t=t->next) {
+            std::cout << t->v;
+        }
+        std::cout <<"\n";
+    }
+};
+
+class cola2 {
+public:
+    node* head = NULL;
+    node* tail = NULL;
+    void push(int n) {
+        if (!tail) {
+            tail = new node(n);
+            head = tail;
+        }                
+        else {
+            tail->next = new node(n);
+            tail = tail->next;
+        }            
+    }
+    void pop(int& n) {
+        if (head) {
+            n = head->v;
+            node* tmp = head->next;
+            delete head;
+            head = tmp;
+        }       
+    }
+    void print() {
+        for (node* t = head;t;t = t->next) {
+            std::cout << t->v;
+        }
+        std::cout << "\n";
+
+    }
+
+};
+int main()
+{
+    cola2 p;
+    int c;
+    for (int i = 0;i < 10;i++) {
+        p.push(i);
+    }
+    p.pop(c);
+    std::cout <<c <<"\n";
+    p.print();
+    std::cout << "Hello World!\n";
+}
