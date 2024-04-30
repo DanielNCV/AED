@@ -5,55 +5,29 @@
 
 class Op{
 public:
-    virtual void cmp(){}
+    virtual bool cmp(int a, int b) { return 0; }
 };
-class op1 :Op {
+class op1 : public Op{
 public:
-    virtual void cmp(int* ini, int* fin){
-        int aux;
-        while (ini < fin) {
-            for (int* c = ini;c <= fin;c++) {
-                if (*c < *ini) {
-                    aux = *ini;
-                    *ini = *c;
-                    *c = aux;
-                }
-            }
-            ini++;
-        }
+    virtual bool cmp(int a, int b) {
+        return a < b;
     }
 };
-/*
+class op2 :public Op {
+public:
+    virtual bool cmp(int a, int b) {
+        return a > b;
+    }
+};
 struct Asc_w {
-    void cmp(int* ini, int* fin) {
-        int aux;
-        while (ini < fin) {
-            for (int* c = ini;c <= fin;c++) {
-                if (*c < *ini) {
-                    aux = *ini;
-                    *ini = *c;
-                    *c = aux;
-                }
-            }
-            ini++;
-        }
+    bool cmp(int a, int b) {
+        return a < b;
     }
 };
-*/
-struct Asc_i {
 
-    inline void cmp(int* ini, int* fin) {
-        int aux;
-        while (ini < fin) {
-            for (int* c = ini;c <= fin;c++) {
-                if (*c < *ini) {
-                    aux = *ini;
-                    *ini = *c;
-                    *c = aux;
-                }
-            }
-            ini++;
-        }
+struct Asc_i {
+    inline bool cmp(int a, int b) {
+        return a < b;
     }
 };
 
@@ -76,18 +50,30 @@ int main()
     float a;
     clock_t time_req;
     time_req = clock();
-
-    int ar[10001] = {}; 
-    for (int i = 0; i < 10000;i++) {
-        ar[i]=rand() % 10;
+    int ar[11] = {}; 
+    for (int i = 0; i < 10;i++) {
+        ar[i]=rand() % 10 + 1;
     }
 
-    //Asc_w o;
-    //o.cmp(&ar[0], &ar[10000]);
-
-
-    //Asc_i o2;
-    //o2.cmp(&ar[0], &ar[10000]);
+    int aux;
+    int* ini = &ar[0];
+    int* fin = &ar[10];
+    Asc_i o;
+    op2 q;
+    Op* p = &q;
+    while (ini < fin) {
+        for (int* c = ini;c <= fin;c++) {
+            if (p->cmp(*c, *ini)) {
+                aux = *ini;
+                *ini = *c;
+                *c = aux;
+            }
+        }
+        ini++;
+    }
+    for (int i = 0; i < 10;i++) {
+        std::cout<<ar[i];
+    }
     time_req = clock() - time_req;
     printf("Processor time taken in pow function: %f "
         "seconds\n",
@@ -97,3 +83,4 @@ int main()
 
     
 }
+
