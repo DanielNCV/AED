@@ -1,0 +1,99 @@
+#include <iostream>
+#include <time.h> 
+#include <stdlib.h> 
+#include <stdio.h>
+
+class Op{
+public:
+    virtual void cmp(){}
+};
+class op1 :Op {
+public:
+    virtual void cmp(int* ini, int* fin){
+        int aux;
+        while (ini < fin) {
+            for (int* c = ini;c <= fin;c++) {
+                if (*c < *ini) {
+                    aux = *ini;
+                    *ini = *c;
+                    *c = aux;
+                }
+            }
+            ini++;
+        }
+    }
+};
+/*
+struct Asc_w {
+    void cmp(int* ini, int* fin) {
+        int aux;
+        while (ini < fin) {
+            for (int* c = ini;c <= fin;c++) {
+                if (*c < *ini) {
+                    aux = *ini;
+                    *ini = *c;
+                    *c = aux;
+                }
+            }
+            ini++;
+        }
+    }
+};
+*/
+struct Asc_i {
+
+    inline void cmp(int* ini, int* fin) {
+        int aux;
+        while (ini < fin) {
+            for (int* c = ini;c <= fin;c++) {
+                if (*c < *ini) {
+                    aux = *ini;
+                    *ini = *c;
+                    *c = aux;
+                }
+            }
+            ini++;
+        }
+    }
+};
+
+void compar(int* ini, int* fin){
+    int aux;
+    while (ini < fin) {
+        for (int* c = ini;c <= fin;c++) {
+            if (*c < *ini) {
+                aux = *ini;
+                *ini = *c;
+                *c = aux;
+            }
+        }
+        ini++;
+    }
+}
+
+int main()
+{
+    float a;
+    clock_t time_req;
+    time_req = clock();
+
+    int ar[10001] = {}; 
+    for (int i = 0; i < 10000;i++) {
+        ar[i]=rand() % 10;
+    }
+
+    //Asc_w o;
+    //o.cmp(&ar[0], &ar[10000]);
+
+
+    //Asc_i o2;
+    //o2.cmp(&ar[0], &ar[10000]);
+    time_req = clock() - time_req;
+    printf("Processor time taken in pow function: %f "
+        "seconds\n",
+        (float)time_req / CLOCKS_PER_SEC);
+
+    //compar(&ar[0], &ar[10000]);
+
+    
+}
