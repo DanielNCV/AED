@@ -1,0 +1,75 @@
+#include <iostream>
+class node {
+public:
+    node(int n, node* n1, node*n2) {
+        v = n;
+        nodes[0] = n1;
+        nodes[1] = n2;
+    }
+    int v;
+    node* nodes[2];
+
+};
+class Btree {
+public:
+    Btree(){
+        h = NULL;
+        b = 0;
+    }
+    node* h;
+    bool b;
+    bool find(int n, node **& p){
+        p = &h;
+        while (*p && (*p)->v != n)
+            p = &((*p)->nodes[(*p)->v < n]);
+        if (*p && (*p)->v == n)
+            return 1;
+        else {
+            return 0;
+        }
+    }
+
+    void insert(int n) {
+        node** p = &h;
+        if (!find(n, p)) {
+            *p = new node(n, NULL, NULL);
+        }
+    }
+    void remove(int n) {
+        node** p = &h;
+        if (find(n, p)) {
+            if ((*p)->nodes[0] && (*p)->nodes[1]) { //verifico si el nodo a eliminar tiene 2 hijos
+                node** q = &((*p)->nodes[b]);
+                for (;(*q)->nodes[!b];q = &((*q)->nodes[!b])); // busco un reemplazo para mi nodo a elminiar, el menor o mayor mas cercano a n
+                b = !b; // buscare un reemplazo por la izq, y a la sgte a la derecha
+                (*p)->v = (*q)->v;
+                p = q;
+            }
+            node* t = *p;
+            *p = (*p)->nodes[(*p)->nodes[0] == 0];
+            delete t;
+        }
+
+    }
+};
+int main()
+{
+    Btree t;
+    t.insert(51);
+    t.insert(33);
+    t.insert(70);
+    t.insert(21);
+    t.insert(37);
+    t.insert(68);
+    t.insert(84);
+    t.remove(51);
+
+    std::cout << (t.h)->v << "\n";
+    std::cout << (t.h)->nodes[0]->v << "\n";
+    std::cout << (t.h)->nodes[1]->v << "\n";
+    std::cout << (t.h)->nodes[0]->nodes[0]->v << "\n";
+    //std::cout << (t.h)->nodes[0]->nodes[1]->v << "\n";
+    std::cout << (t.h)->nodes[1]->nodes[0]->v << "\n";
+    std::cout << (t.h)->nodes[1]->nodes[1]->v << "\n";
+
+}
