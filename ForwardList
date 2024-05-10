@@ -1,0 +1,59 @@
+#include <iostream>
+class node {
+public:
+    node(int n, node* nn) {
+        v = n;
+        next = nn;
+    }
+    int v;
+    node* next;
+};
+class ForwardList {
+public:
+    ForwardList(){
+        h = NULL;
+    }
+    node* h;
+    bool find(int n, node**&p) {
+        p = &h;
+        for (;*p && (*p)->v < n;p = &((*p)->next));
+        if(*p && (*p)->v== n){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    void insert(int n) {
+        node** p;
+        if (!find(n, p)) {
+            node* tmp = new node(n, *p);
+            *p = tmp;
+        }        
+    }
+    void remove(int n) {
+        node** p;
+        if(find(n,p)){
+            node* t = *p;
+            *p = (*p)->next;
+        }
+    }
+    void print() {
+        for (node** p = &(h);*p;p = &((*p)->next))
+            std::cout << ((*p)->v);
+        std::cout << "\n";
+    }
+};
+int main()
+{
+    ForwardList fd;
+    fd.insert(4);
+    fd.insert(10);
+    fd.insert(1);
+    fd.insert(8);
+    fd.print();
+    fd.remove(8);
+    fd.print();
+
+    std::cout << "Hello World!\n";
+}
