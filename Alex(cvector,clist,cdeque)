@@ -164,7 +164,7 @@ public:
         }
     }    
 };
-#include <iostream>
+
 class node {
 public:
     node(int n, node* nn, node* pp){
