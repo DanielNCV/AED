@@ -164,6 +164,73 @@ public:
         }
     }    
 };
+#include <iostream>
+class node {
+public:
+    node(int n, node* nn, node* pp){
+        v = n;
+        next = nn;
+        prev = pp;
+
+    }
+    int v;
+    node* next;
+    node* prev;
+
+};
+class Clist {
+public:
+    Clist() {
+        h = NULL;
+        t = NULL;
+    }
+    node* h;
+    node* t;
+    void push_back(int n) { 
+        if (!t) {
+            t = new node(n, NULL, NULL);
+            h = t;
+
+        }
+        else {
+            t->next = new node(n, NULL, t);
+            t = t->next;
+        }
+    }
+    void push_front(int n) {     
+        if (!h) {
+            node* tmp = new node(n, NULL, NULL);
+            h = tmp;
+            t = h;
+        }
+        else {
+            node* tmp = new node(n, h, NULL);
+            h->prev = tmp;
+            h = tmp;
+        }
+    }
+    void pop_front() {
+        if(h){
+            node* tmp = h;
+            h = h->next;
+            h->prev = NULL;
+            delete tmp;
+        }
+    }
+    void pop_back() {
+        if (t->prev) {
+            node* tmp = t;          
+            t = t->prev;
+            t->next = NULL;
+            delete tmp;
+        }
+    }
+    void print() {
+        for (node** p = &(h);*p;p = &((*p)->next))
+            std::cout << ((*p)->v);
+        std::cout << "\n";
+    }
+};
 int main()
 {
     int b;
