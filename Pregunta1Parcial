@@ -1,0 +1,114 @@
+class node
+{
+public:
+    node(int n, node* nn) {
+        data = n;
+        next = nn;
+    }
+    int data;
+    node* next;
+};
+
+class CircularLinkedList
+{
+    node* head = NULL;
+public:
+    void add(int value)
+    {
+        if (!head) {
+            node* tmp = new node(value, NULL);
+            head = tmp;
+            head->next = head;
+        }
+        else {
+            if (value < head->data) {
+                node* ptr = head;
+                while (ptr->next != head)
+                {
+                    ptr = ptr->next;
+                }
+                node* tmp = new node(value, head);
+                head = tmp;
+                ptr->next = head;
+            }
+            else {
+                node* ptr = head;
+                while (ptr->next != head && ptr->next->data < value)
+                {
+                    ptr = ptr->next;
+                }
+                node* tmp = new node(value, ptr->next);
+                ptr->next = tmp;
+
+            }
+        }
+    }
+
+    void del(int value)
+    {
+        if (head) {
+            node* ptr = head;
+            while (ptr->next != head && ptr->next->data != value)
+            {
+                ptr = ptr->next;
+            }
+            if(ptr->next->data == value){
+                if (ptr->next == head) {
+                    if (head->next != head) {
+                        node* tmp = head;
+                        ptr->next = head->next;
+                        head = head->next;
+                        delete tmp;
+                    }
+                    else {
+                        node* tmp = head;
+                        head = NULL;
+                        delete tmp;
+                    }
+                }
+                else {
+                    node* tmp = ptr->next;
+                    ptr->next = ptr->next->next;
+                    delete tmp;
+                }
+            }
+        }
+
+    }
+
+    void print()
+    {
+        int cont = 0;
+        node* ptr = head;
+        cout << "head->";
+        while (head && cont < 1)
+        {
+            cout << ptr->data << " -> ";
+            ptr = ptr->next;
+            if (ptr == head) cont++;
+        }
+        if (head) cout << ptr->data;
+        cout << " <- head \n ";
+
+    }
+};
+int main ()
+{
+    int ADD[10] = { 2,4,6,8,10,1,3,5,7,9 };
+    int DEL[10] = { 9,7,5,3,1,10,8,6,4,2 };
+    CircularLinkedList CLL;
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "ADD " << ADD[i] << endl;
+        CLL.add(ADD[i]);
+        CLL.print();
+    }
+
+    
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "DEL " << DEL[i] << endl;
+        CLL.del(DEL[i]);
+        CLL.print();
+    }
+]
