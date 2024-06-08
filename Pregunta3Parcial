@@ -1,0 +1,147 @@
+class XVector
+{
+public:
+    XVector(int size_map, int size_vec);
+    ~XVector();
+    void push_back(int n);
+    void push_front(int n);
+    int operator[](int n);
+    int** map;
+    int size_map, size_vec;
+    int* fin;
+    int** fin_m;
+    int** ini_m;
+    int* ini;
+    int size;
+};
+
+XVector::XVector(int sm, int sv)
+{
+    size_map = sm;
+    size_vec = sv;
+    map = new int* [sm];
+    *map = new int[sv];
+
+    fin_m = map;
+    fin = *fin_m;
+    ini_m = map;
+    ini = *map;
+    size = 0;
+
+}
+void XVector::push_back(int n ){
+    if (fin_m == map + size_map - 1 && fin == *(fin_m) + size_vec - 1) {
+        //exp m 
+        *fin = n;
+      
+        int** p = new int* [2 * size_map];
+        int** q = p;
+        for (int ** r = ini_m; q < p + size_map ;q++, r++) {
+            *q = *r;         
+        }
+        *q = new int[size_vec];        
+        ini_m = p + (ini_m - map);
+        map = p;
+        fin_m = q;
+        fin = *q;
+        size_map = 2 * size_map;
+        size++;      
+    }
+    else {
+        if(fin == *(fin_m)+size_vec - 1){
+            //exp nodo
+            *fin = n;
+            fin_m++;
+            *fin_m = new int[size_vec];
+            fin = *fin_m;
+            size++;
+        }
+        else {
+            if (ini == fin) {
+                fin++;
+            }
+            *fin = n;
+            fin++;
+            size++;
+        }
+    }
+}
+void XVector::push_front(int n) {
+    if (map == ini_m && ini== *ini_m) {
+        *ini = n;
+        //exp m
+        int** p = new int* [2 * size_map];
+        int** q = p+size_map;
+        for (int**r=ini_m;r<= fin_m;r++,q++) {
+            *q = *r;
+        }
+        map = p;
+        ini_m= p + size_map-1;
+        *ini_m = new int[size_vec];
+        fin_m = q-1;
+        ini = *ini_m + size_vec - 1;
+        size_map = 2 * size_map;
+        size ++;
+    }
+    else {
+        if (ini == *ini_m) {
+            *ini = n;
+            ini_m--;
+            *ini_m = new int[size_vec];
+            ini = *ini_m + size_vec - 1;
+            size++;
+        }
+        else {           
+            *ini = n;
+            ini--;
+            size++;
+        }        
+    }
+}
+XVector::~XVector()
+{
+    for (int** p = ini_m;p <= fin_m;p++) {        
+        for (int* q = *p;q <= *p + size_vec;q++) {
+            delete q;
+        }
+        delete p;
+    }
+}
+
+int XVector::operator[](int n) {
+
+    int f = (ini+1)-*ini_m;
+    n = f + n;
+    int a = (n / size_vec);
+    int b = n - (a * size_vec);
+    int** p = ini_m;
+    return *(*(p + a) + b);
+
+}
+void print(XVector* p)
+{ //no modificar esta función
+    for (int i = 0; i < p->size; i++)
+        std::cout << (*p)[i] << " ";
+    std::cout << "\n";
+}
+
+int main()
+{
+    //no modificar esta función main
+    
+    XVector v(2, 3);
+    
+    v.push_back(3); v.push_back(8); v.push_back(1);
+    v.push_back(4); v.push_back(9); v.push_back(6);
+    v.push_back(7);
+    print(&v);
+    v.push_front(5); v.push_front(2);
+    print(&v);
+    v.push_front(11); v.push_front(17);
+    v.push_back(22);
+    print(&v);
+    v.push_front(33); v.push_back(77);
+    print(&v);
+
+
+}
