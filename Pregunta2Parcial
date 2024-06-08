@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+void impr_rec(int* v, int size) {
+    if (size == 1||size==0) {
+        cout << *v;
+        return;
+    }
+    cout << *v;
+    impr_rec(v + (size-1) / 2, (size) / 2);   
+    impr_rec(v- (size-1) / 2, (size) / 2);
+    cout << *v;
+}
+int main()
+{
+    int v[] = { 1,2,3,4,5};
+    int* p = v+2;
+    impr_rec(p, 5);
+}
