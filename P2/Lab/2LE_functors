@@ -52,8 +52,10 @@ struct LE{
             return false;
     }
     void print() {
+        std::cout << "head->";
         for (nodo<T>* p = head; p; p = p->next)
-            std::cout << p->valor << ' ';
+            std::cout << p->valor << "->";
+        std::cout << "null\n";
     }
 };
 
