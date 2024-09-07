@@ -1,0 +1,43 @@
+#include <iostream>
+template <class T>
+class Asc {
+public:
+    bool operator() (int a, int b) {
+        return a > b;
+    }
+};
+
+template <class T>
+class Des {
+public:
+    bool operator() (int a, int b) {
+        return a < b;
+    }
+};
+
+template <class T, class O>
+struct bubble {
+    void operator() (T* ini, T* fin) {
+        O op;
+        bool sigue = true;
+        while ((ini < fin) && true) {
+            sigue = false;
+            for (T* p = ini; p < fin; p++)
+                if (op(*p, *(p + 1))) {
+                    T tmp = *(p + 1);
+                    *(p + 1) = *p;
+                    *p = tmp;
+                    sigue = true;
+                }
+            fin--;
+        }
+    }
+};
+int main()
+{
+    int ar[10] = { 1,5,7,3,2,6,8,16,17,0};
+    bubble<int, Des<int>> b;
+    b(&ar[0], &ar[9]);
+    for(int i =0; i<10; i++)
+        std::cout << ar[i] << " ";
+}
