@@ -3,7 +3,7 @@ template <class T>
 class Asc {
 public:
     bool operator() (int a, int b) {
-        return a > b;
+        return a < b;
     }
 };
 
@@ -11,7 +11,7 @@ template <class T>
 class Des {
 public:
     bool operator() (int a, int b) {
-        return a < b;
+        return a > b;
     }
 };
 
@@ -28,6 +28,7 @@ struct nodo {
 template<class T, class O>
 struct LE{
     nodo<T>* head= NULL;
+    O op;
     void ADD(T v) {
         nodo<T>** p;
         if (!find(v, p)) {
@@ -45,7 +46,7 @@ struct LE{
     }
     bool find(T v, nodo<T>**& pos) {
         pos = &head;
-        for (; *pos && (*pos)->valor < v; pos = &(*pos)->next);
+        for (; *pos && op((*pos)->valor, v); pos = &(*pos)->next);
         if (*pos && (*pos)->valor == v)
             return true;
         else
@@ -61,14 +62,15 @@ struct LE{
 
 int main()
 {
-    LE<int, Asc<int>> listita;
-    listita.ADD(1);
-    listita.ADD(25);
-    listita.ADD(0);
-    listita.ADD(7);
-    listita.ADD(3);
+
+    LE<char, Asc<char>> listita;
+    listita.ADD('r');
+    listita.ADD('g');
+    listita.ADD('h');
+    listita.ADD('j');
+    listita.ADD('f');
     listita.print();
-    listita.DEL(7);
+    listita.DEL('h');
     listita.print();
 
 }
