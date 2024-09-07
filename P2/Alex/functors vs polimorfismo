@@ -1,0 +1,44 @@
+#include <iostream>
+//functors
+struct Asc_{
+  bool operator()(int* a, int*b){
+    return a<b;
+  }
+};
+//functors inline
+struct Asc_i{
+  inline bool operator()(int* a, int*b){
+    return a<b;
+  }
+};
+//polimorfismo
+struct Padre{
+  bool operator()((int* a, int*b)=0;
+};
+
+struct Hijo1: Padre {
+  bool operator()(int* a, int*b){
+    return a<b;
+  }
+};
+template<class O>
+void ord(int*i, int *f){
+  O op;
+  while(i<f){
+    for(int*p = i; p<f; p++){
+      if(O(i,p)){
+        int tmp= *i;
+        *i=*p;
+        *p=tmp;
+        break;
+      }
+    }
+    i++;
+  }
+}
+int main(){
+  int arr[10]= {1,5,3,7,9,12,56,33,39,15};
+  ord<Asc_>(&arr[0], &arr[9]);
+  for(int i = 0; i<10; i++)
+    std::cout<< arr[i]<< ' ' ;
+}
