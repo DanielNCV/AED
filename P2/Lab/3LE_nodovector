@@ -1,0 +1,89 @@
+#include <iostream>
+template <class T>
+class Asc {
+public:
+    bool operator() (int a, int b) {
+        return a < b;
+    }
+};
+
+template <class T>
+class Des {
+public:
+    bool operator() (int a, int b) {
+        return a > b;
+    }
+};
+
+template<class T>
+struct nodo {
+    T valor[5];
+    nodo<T>* next;
+    T* top = valor;
+    nodo(T v, nodo<T>* n = NULL) {
+        *top = v;
+        next = n;
+    }
+};
+
+template<class T, class O>
+struct LE {
+    nodo<T>* head = NULL;
+    O op;
+    void ADD(T v) {
+        nodo<T>* p;
+        T* q;
+        if (!find(v, p, q)) {
+            if(p->top != p->valor[4]  && p->top != p->valor[4]){
+            
+            }
+            else if (p->top == p->valor[4]) {
+                nodo<T>* tmp = new nodo<T>(v, p);
+                tmp->top++;
+                p = tmp;
+            }
+
+        }
+    }
+    void DEL(T v) {
+        nodo<T>* p;
+        if (find(v, p)) {
+            nodo<T>* tmp = p;
+            p = p->next;
+            delete tmp;
+        }
+    }
+    bool find(T v, nodo<T>*& pos, T* &q) {
+        pos = head;
+        q = (*pos)->valor;
+        for (; pos; pos = pos->next)
+            for (; p < top && op(*p, v); p++);      
+        if (pos && *p == v)
+            return true;
+        else
+            return false;
+    }
+    void print() {
+        std::cout << "head->";
+        for (nodo<T>* p = head; p; p = p->next) {
+            std::cout << p->valor << "[";
+            int* q = p->valor[0]
+            for (; q <= p->top]; q++) {
+                std::cout << p->valor << ", ";
+            }
+            for (; q <= p->valor[4]; q++) {
+                std::cout << p->valor << "-, ";
+            }
+            std::cout << p->valor << "] ->";
+
+        }
+            
+        std::cout << "null\n";
+    }
+};
+int main()
+{
+    LE<int, Asc<int>> listav2;
+
+    std::cout << "Hello World!\n";
+}
