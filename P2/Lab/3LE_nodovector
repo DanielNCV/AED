@@ -32,11 +32,11 @@ struct LE {
     O op;
     void ADD(T v) {
         nodo<T>* p;
-        T* r
-        T tmp
+        T* r;
+        T tmp;
         if (!find(v, p, r)) {  
             if(!head){
-                head= new node(v);
+                head= new nodo<T>(v);
             }
             /*
             if(p->top != p->valor[4]){
@@ -54,11 +54,11 @@ struct LE {
                     *r=v;
                     *(r+1)=tmp;                    
                 }
-            if(p->top != p->&valor[4]){
+            if(p->top != &p->valor[4]){
                 (p->top)++;
             }
             else
-                p->next= new node(tmp);
+                p->next= new nodo<T>(tmp);
         }
     }
     void DEL(T v) {
