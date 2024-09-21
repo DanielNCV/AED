@@ -32,17 +32,33 @@ struct LE {
     O op;
     void ADD(T v) {
         nodo<T>* p;
-        T* q;
-        if (!find(v, p, q)) {
-            if(p->top != p->valor[4]  && p->top != p->valor[4]){
-            
+        T* r
+        T tmp
+        if (!find(v, p, r)) {  
+            if(!head){
+                head= new node(v);
+            }
+            /*
+            if(p->top != p->valor[4]){
+
             }
             else if (p->top == p->valor[4]) {
                 nodo<T>* tmp = new nodo<T>(v, p);
                 tmp->top++;
                 p = tmp;
             }
-
+            */
+            for (; p; p = p->next)
+                for (; r < p->top; r++){
+                    tmp= *r;
+                    *r=v;
+                    *(r+1)=tmp;                    
+                }
+            if(p->top != p->&valor[4]){
+                (p->top)++;
+            }
+            else
+                p->next= new node(tmp);
         }
     }
     void DEL(T v) {
@@ -55,35 +71,35 @@ struct LE {
     }
     bool find(T v, nodo<T>*& pos, T* &q) {
         pos = head;
-        q = (*pos)->valor;
+        q = pos->valor;
         for (; pos; pos = pos->next)
-            for (; p < top && op(*p, v); p++);      
-        if (pos && *p == v)
-            return true;
-        else
-            return false;
+            for (; q <= pos->top && op(*q, v); q++)
+                if (*q == v)
+                    return true;
+        return false;
     }
     void print() {
         std::cout << "head->";
         for (nodo<T>* p = head; p; p = p->next) {
             std::cout << p->valor << "[";
-            int* q = p->valor[0]
-            for (; q <= p->top]; q++) {
+            int* q = p->valor;
+            for (; q <= p->top; q++) {
                 std::cout << p->valor << ", ";
             }
-            for (; q <= p->valor[4]; q++) {
+            for (; q <= &p->valor[4]; q++) {
                 std::cout << p->valor << "-, ";
             }
             std::cout << p->valor << "] ->";
 
         }
-            
+
         std::cout << "null\n";
     }
 };
 int main()
 {
     LE<int, Asc<int>> listav2;
-
+    listav2.ADD(2);
+    //listav2.print();
     std::cout << "Hello World!\n";
 }
