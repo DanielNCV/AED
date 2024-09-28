@@ -19,87 +19,93 @@ template<class T>
 struct nodo {
     T valor[5];
     nodo<T>* next;
-    T* top = valor;
+    T* top;
     nodo(T v, nodo<T>* n = NULL) {
-        *top = v;
+        valor[0] = v;
+        top= &valor[0];
         next = n;
     }
 };
 
 template<class T, class O>
-struct LE {
-    nodo<T>* head = NULL;
+struct LE{
+    nodo<T>* head= NULL;
     O op;
     void ADD(T v) {
-        nodo<T>* p;
-        T* r;
-        T tmp;
-        if (!find(v, p, r)) {  
-            if(!head){
-                head= new nodo<T>(v);
-            }
-            /*
-            if(p->top != p->valor[4]){
-
-            }
-            else if (p->top == p->valor[4]) {
-                nodo<T>* tmp = new nodo<T>(v, p);
-                tmp->top++;
-                p = tmp;
-            }
-            */
-            for (; p; p = p->next)
-                for (; r < p->top; r++){
-                    tmp= *r;
-                    *r=v;
-                    *(r+1)=tmp;                    
-                }
-            if(p->top != &p->valor[4]){
-                (p->top)++;
-            }
-            else
-                p->next= new nodo<T>(tmp);
+        nodo<T>** p;
+        T* q;
+        if (!find(v, p,q)) {
+            if(!(*p))
+                *p = new nodo<T>(v);           
+            else{             
+                for (; *p  ; p = &(*p)->next){
+                    q=&(*p)->valor[0];
+                    for(;q<=(*p)->top ;q++){ 
+                        int tmp= *q;
+                        *q=v;
+                        v=tmp;
+                        if(q==&(*p)->valor[4]){
+                            continue;
+                        }
+                        if(!(*p)->next && q==&(*p)->valor[4]){
+                            nodo<T>* t= new nodo<T>(v);
+                            (*p)->next=t;
+                            break;
+                        }
+                        (*p)->top++;
+                    }
+                } 
+            }         
         }
     }
     void DEL(T v) {
-        nodo<T>* p;
-        if (find(v, p)) {
-            nodo<T>* tmp = p;
-            p = p->next;
+        nodo<T>** p;
+        T* q;
+        if (find(v, p,q)) {
+            nodo<T>* tmp =  *p;
+            *p = (*p)->next;
             delete tmp;
         }
     }
-    bool find(T v, nodo<T>*& pos, T* &q) {
-        pos = head;
-        q = pos->valor;
-        for (; pos; pos = pos->next)
-            for (; q <= pos->top && op(*q, v); q++)
-                if (*q == v)
-                    return true;
-        return false;
+    bool find(T v, nodo<T>**& pos, T* &q) {
+        pos = &head;
+        for (; *pos && op((*pos)->valor[0], v); pos = &(*pos)->next){
+            q=&(*pos)->valor[0];
+            for(;q<(*pos)->top && op(*q, v);q++){                
+            }
+        }        
+        if (*pos && *q == v)
+            return true;
+        else
+            return false;
     }
     void print() {
         std::cout << "head->";
         for (nodo<T>* p = head; p; p = p->next) {
-            std::cout << p->valor << "[";
-            int* q = p->valor;
+            std::cout << "[";
+            T* q = &p->valor[0];
             for (; q <= p->top; q++) {
                 std::cout << p->valor << ", ";
             }
-            for (; q <= &p->valor[4]; q++) {
-                std::cout << p->valor << "-, ";
-            }
-            std::cout << p->valor << "] ->";
-
+            std::cout<< "] ->";
+    
         }
-
+    
         std::cout << "null\n";
     }
 };
+
 int main()
 {
-    LE<int, Asc<int>> listav2;
-    listav2.ADD(2);
-    //listav2.print();
-    std::cout << "Hello World!\n";
+
+    LE<char, Asc<char>> listita;
+    listita.ADD('r');
+    listita.ADD('g');
+    listita.ADD('h');
+    listita.ADD('j');
+    listita.ADD('f');
+    listita.print();
+    //listita.DEL('h');
+    listita.print();
+
 }
