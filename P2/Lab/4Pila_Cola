@@ -20,8 +20,6 @@ struct cola {
         tail = *p;
     }
     void print() {
-        std::cout << "cola\n";
-
         nodo<T>** p = &head;
         for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
@@ -34,7 +32,6 @@ struct cola {
             return 1;
         }
         return 0;
-
     }
 };
 template<class T>
@@ -45,7 +42,6 @@ struct pila {
         top = p;
     }
     void print() {
-        std::cout << "pila\n";
         nodo<T>** p = &top;
         for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
@@ -57,45 +53,32 @@ struct pila {
             valor = top->v;
             top = top->next;
         }
-
     }
 };
 int main()
 {
     std::cout << "Hello World!\n";
+    /*
     pila<int> p;
-    p.push(2);
-    p.push(5);
-    p.push(7);
-    p.push(9);
-    p.push(10);
-    p.print();
+    for (int i = 0; i < 6; i++) {
+        p.push(i);
+        p.print();
+    }
     int i;
-    p.pop(i);
-    p.pop(i);
-    p.pop(i);
-    p.pop(i);
-
-    p.print();
-    p.pop(i);
-
-    p.print();
-
+    for (int j = 0; j < 6; j++) {
+        p.pop(i);
+        p.print();
+    }
+    */
+    
     cola<int> c;
-    c.push(2);
-    c.push(5);
-    c.push(7);
-    c.push(9);
-    c.push(10);
-    c.print();
-    c.pop(i);
-    c.pop(i);
-    c.pop(i);
-    c.pop(i);
-
-    c.print();
-    c.pop(i);
-
-    c.print();
-
+    for (int i = 0; i < 6; i++) {
+        c.push(i);
+        c.print();
+    }
+    int i;
+    for (int j = 0; j < 6; j++) {
+        c.pop(i);
+        c.print();
+    }  
 }
