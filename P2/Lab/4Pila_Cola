@@ -1,0 +1,63 @@
+#include <iostream>
+template<class T>
+struct nodo {
+    T v;
+    nodo<T>* next;
+    nodo(T x, nodo<T>* n=NULL){
+        v = x;
+        next = n;
+    }
+};
+template<class T>
+struct cola {
+    nodo<T>* head=NULL;
+    nodo<T>* tail=NULL;
+
+    void push(T x){
+        nodo<T>** p = &head;
+        for (; *p; p = &(*p)->next);
+        *p = new nodo<T>(x);
+        tail = *p;
+    }
+    void print() {
+        nodo<T>** p = &head;
+        for (; *p && (*p)<tail ; p = &(*p)->next)
+            std::cout << (*p)->v << "->";
+
+    }
+    bool pop(T& valor) {
+        nodo<T>** p = &head;
+        for (; *p && (*p)->next; tail = *p, p = &(*p)->next);
+        if (p == &head) {
+            valor = (*p)->v;
+
+        }
+    }
+};
+template<class T>
+struct pila {
+    nodo<T>* top=NULL;
+    void push(T x) {
+        nodo<T>* p = new nodo<T>(x,top);
+        top = p;
+    }
+    void print() {
+        nodo<T>** p = &top;
+        for (; *p; p = &(*p)->next)
+            std::cout << (*p)->v << "->";
+
+    }
+};
+int main()
+{
+    std::cout << "Hello World!\n";
+    cola<int> p;
+    p.push(2);
+    p.push(5);
+    p.push(7);
+    p.push(9);
+    p.push(10);
+    p.print();
+
+
+}
