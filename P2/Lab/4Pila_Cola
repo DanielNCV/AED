@@ -14,10 +14,14 @@ struct cola {
     nodo<T>* tail = NULL;
 
     void push(T x) {
-        nodo<T>** p = &head;
-        for (; *p; p = &(*p)->next);
-        *p = new nodo<T>(x);
-        tail = *p;
+        if (tail) {
+            tail->next = new nodo<T>(x);
+            tail = tail->next;
+        }
+        else
+            tail = new nodo<T>(x);
+        if (!head)
+            head = tail;
     }
     void print() {
         nodo<T>** p = &head;
@@ -27,8 +31,10 @@ struct cola {
     }
     bool pop(T& valor) {
         if (head) {
+            nodo<T>* tmp = head;
             valor = head->v;
             head = head->next;
+            delete tmp;
             return 1;
         }
         return 0;
@@ -50,15 +56,17 @@ struct pila {
     }
     void pop(T& valor) {
         if (top) {
+            nodo<T>* tmp = top;
             valor = top->v;
             top = top->next;
+            delete tmp;
         }
     }
 };
 int main()
 {
     std::cout << "Hello World!\n";
-    /*
+    
     pila<int> p;
     for (int i = 0; i < 6; i++) {
         p.push(i);
@@ -69,16 +77,17 @@ int main()
         p.pop(i);
         p.print();
     }
-    */
+    
     
     cola<int> c;
     for (int i = 0; i < 6; i++) {
         c.push(i);
         c.print();
     }
-    int i;
+    int x;
     for (int j = 0; j < 6; j++) {
-        c.pop(i);
+        c.pop(x);
         c.print();
-    }  
+    }
+    
 }
