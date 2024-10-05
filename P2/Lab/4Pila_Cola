@@ -26,11 +26,9 @@ struct cola {
 
     }
     bool pop(T& valor) {
-        nodo<T>** p = &head;
-        for (; *p && (*p)->next; tail = *p, p = &(*p)->next);
-        if (p) {
-            valor = (*p)->v;
-            *p=NULL;
+        if(head){
+            valor= head->v;
+            head=head->next;
         }
     }
 };
