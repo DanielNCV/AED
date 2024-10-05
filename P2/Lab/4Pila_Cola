@@ -21,16 +21,16 @@ struct cola {
     }
     void print() {
         nodo<T>** p = &head;
-        for (; *p && (*p)<tail ; p = &(*p)->next)
+        for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
 
     }
     bool pop(T& valor) {
         nodo<T>** p = &head;
         for (; *p && (*p)->next; tail = *p, p = &(*p)->next);
-        if (p == &head) {
+        if (p) {
             valor = (*p)->v;
-
+            *p=NULL;
         }
     }
 };
@@ -45,7 +45,13 @@ struct pila {
         nodo<T>** p = &top;
         for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
-
+    }
+    void pop(T& valor){
+        if(top){
+            valor= top->v;
+            top=top->next;
+        }
+            
     }
 };
 int main()
