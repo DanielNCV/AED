@@ -3,65 +3,99 @@ template<class T>
 struct nodo {
     T v;
     nodo<T>* next;
-    nodo(T x, nodo<T>* n=NULL){
+    nodo(T x, nodo<T>* n = NULL) {
         v = x;
         next = n;
     }
 };
 template<class T>
 struct cola {
-    nodo<T>* head=NULL;
-    nodo<T>* tail=NULL;
+    nodo<T>* head = NULL;
+    nodo<T>* tail = NULL;
 
-    void push(T x){
+    void push(T x) {
         nodo<T>** p = &head;
         for (; *p; p = &(*p)->next);
         *p = new nodo<T>(x);
         tail = *p;
     }
     void print() {
+        std::cout << "cola\n";
+
         nodo<T>** p = &head;
         for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
-
+        std::cout << "\n";
     }
     bool pop(T& valor) {
-        if(head){
-            valor= head->v;
-            head=head->next;
+        if (head) {
+            valor = head->v;
+            head = head->next;
+            return 1;
         }
+        return 0;
+
     }
 };
 template<class T>
 struct pila {
-    nodo<T>* top=NULL;
+    nodo<T>* top = NULL;
     void push(T x) {
-        nodo<T>* p = new nodo<T>(x,top);
+        nodo<T>* p = new nodo<T>(x, top);
         top = p;
     }
     void print() {
+        std::cout << "pila\n";
         nodo<T>** p = &top;
         for (; *p; p = &(*p)->next)
             std::cout << (*p)->v << "->";
+        std::cout << "\n";
+
     }
-    void pop(T& valor){
-        if(top){
-            valor= top->v;
-            top=top->next;
+    void pop(T& valor) {
+        if (top) {
+            valor = top->v;
+            top = top->next;
         }
-            
+
     }
 };
 int main()
 {
     std::cout << "Hello World!\n";
-    cola<int> p;
+    pila<int> p;
     p.push(2);
     p.push(5);
     p.push(7);
     p.push(9);
     p.push(10);
     p.print();
+    int i;
+    p.pop(i);
+    p.pop(i);
+    p.pop(i);
+    p.pop(i);
 
+    p.print();
+    p.pop(i);
+
+    p.print();
+
+    cola<int> c;
+    c.push(2);
+    c.push(5);
+    c.push(7);
+    c.push(9);
+    c.push(10);
+    c.print();
+    c.pop(i);
+    c.pop(i);
+    c.pop(i);
+    c.pop(i);
+
+    c.print();
+    c.pop(i);
+
+    c.print();
 
 }
