@@ -1,0 +1,129 @@
+#include <iostream>
+using namespace std;
+template <class T>
+class Cvector {
+public:
+    Cvector() {
+        arr = new T[tam];
+        ini = &arr[0];
+        fin = &arr[0];
+        
+    }
+    T* ini;
+    T* fin;
+    int tam=5;
+    T* arr;
+    void push_back(T n);
+    T operator[](T n) const;
+    T& operator[](T n);
+    void expan();
+    void print();
+    void push_front(T n);
+    void pop_front(T& n);
+    void pop_back(T& n);
+
+
+
+};
+template<class T>
+void Cvector<T>::push_back(T n) {
+    if (fin < ini + tam - 1) {
+        *fin = n;
+        fin++;
+    }    
+    else {
+        tam = tam * 2;
+        T* tmp = new T[tam];
+        T* tmp1 = tmp;
+        for (;ini < fin; tmp1++, ini++) {
+            *tmp1 = *ini;
+        }
+        fin = tmp1;
+        T* tmp2 = arr;
+        ini = tmp;
+        arr = tmp;
+        delete tmp2;
+        *fin = n;
+        fin++;
+    }
+}
+template<class T>
+T Cvector<T>::operator[](T n) const{
+    return *(ini + n );
+}
+template<class T>
+T& Cvector<T>::operator[](T n) {
+    return *(ini + n);
+}
+
+template<class T>
+void Cvector<T>::print() {  
+    for (T* i = ini; i < fin; i++)
+        cout << *i;
+    cout << "\n";
+}
+template<class T>
+void Cvector<T>::push_front(T n) {
+    if (fin < ini + tam - 1) {
+        for (T* tmp = ini; tmp <= fin; tmp++) {
+            int t = *tmp;
+            *tmp = n;
+            n = t;
+        }
+        fin++;
+    }
+    else {
+        tam = tam * 2;
+        T* tmp = new T[tam];
+        T* tmp1 = tmp;
+        for (T* tmp2 = ini; tmp2 <= fin; tmp2++, tmp1++) {
+            int t = *tmp2;
+            *tmp1 = n;
+            n = t;
+        }
+        fin = tmp1;
+        T* tmp2 = arr;
+        ini = tmp;
+        arr = tmp;
+        delete tmp2;
+
+    }
+}
+
+template<class T>
+void Cvector<T>::pop_front(T& n) {
+    if (ini) {
+        n = *ini;
+        for (T* tmp = ini; tmp < fin; tmp++)
+            *tmp = *(tmp + 1);
+        fin--;
+    }
+    
+}
+template<class T>
+void Cvector<T>::pop_back(T& n) {
+    if (fin!=ini) {
+        n = *fin;
+        fin--;
+    }
+}
+int main()
+{
+    Cvector<int> v;
+    for (int i =0; i< 5; i++)
+        v.push_back(i);
+    v.print();
+    
+    for (int i = 0; i <5; i++)
+        v.push_front(i);
+
+    v.print();
+    int x;
+    for (int i = 0; i < 5; i++)
+        v.pop_front(x);
+    v.print();
+    for (int i = 0; i < 4; i++)
+        v.pop_back(x);
+    v.print();
+
+}
