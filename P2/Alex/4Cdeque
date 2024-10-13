@@ -1,0 +1,155 @@
+#include <iostream>
+using namespace std;
+template <class T>
+class Cdeque {
+public: //no ordenar
+    int tam_map = 5;
+    int tam_nod = 5;
+    T** map = new T*[5];
+    T** ini_map;
+    T** fin_map;
+    T* ini ;
+    T* fin;
+    Cdeque() {
+        ini_map = map + 2;
+        *ini_map = new T[5];
+        fin_map = ini_map;
+        ini = *ini_map + 2;
+        fin = ini;
+    }
+    void push_back(T n);
+    void print();
+    void push_front(T n);
+    void pop_front(T& n);
+    void pop_back(T& n);
+
+    T operator[] (T n) const;
+    T& operator[] (T n);
+
+};
+
+template <class T>
+void Cdeque<T>::push_back(T n) {
+    if (fin_map < map + tam_map - 1) {
+        if (fin < *fin_map + tam_nod - 1) {
+            *fin = n;
+            fin++;
+        }
+        else {
+            *fin = n;
+            fin_map++;
+            *fin_map = new T[5];
+            fin = *fin_map;
+        }
+    }
+    else {
+        T** tmpmap = new T * [tam_map * 2];
+        T** tmp1 = tmpmap + tam_map - 1;
+        for (T** tmp = ini_map;tmp <= fin_map; tmp++, tmp1++) {
+            *tmp1 = *tmp;
+        }
+        fin_map = tmp1 - 1;
+        ini_map = tmpmap + tam_map - 1;
+        T** tmp2 = map;
+        map = tmpmap;
+        delete[] tmp2;
+        *fin = n;
+        fin++;
+        tam_map = tam_map * 2;
+    }
+}
+template <class T>
+T Cdeque<T>::operator[] (T n) const {
+    T** p = ini_map;
+
+    int a = ini - *p;
+    n = n + a;
+    int b = n / tam_nod;
+    int c = n % tam_nod;
+    return *(*(p + b) + c);
+}
+template <class T>
+T& Cdeque<T>::operator[] (T n) {
+    T** p = ini_map;
+    int a = ini - *p;
+    n = n + a;
+    int b = n / tam_nod;
+    int c = n % tam_nod ;
+    return *(*(p + b) + c);
+}
+template <class T>
+void Cdeque<T>::print() {
+    for (T** tmp = ini_map; tmp <= fin_map; tmp++) {
+        for (T* tmp2= *tmp; tmp2< *tmp + tam_nod; tmp2++) {
+            cout << *tmp2;
+        }
+    }
+}
+template <class T>
+void Cdeque<T>::push_front(T n){
+    if (ini_map > map) {
+        if (ini > *ini_map) {
+            ini--;
+            *ini = n;
+        }
+        else {
+            ini_map--;
+            *ini_map = new T[tam_nod];
+            ini = *ini_map + tam_nod - 1;
+            *ini = n;
+        }
+    }
+    else{
+        T** tmpmap = new T * [tam_map * 2];
+        T** tmp1 = tmpmap + tam_map - 1;
+        for (T** tmp = ini_map;tmp <= fin_map; tmp++, tmp1++) {
+            *tmp1 = *tmp;
+        }
+        fin_map = tmp1 - 1;
+        ini_map = tmpmap + tam_map - 1;
+        T** tmp2 = map;
+        map = tmpmap;
+        delete[] tmp2;
+        ini--;
+        *ini = n;
+        tam_map = tam_map * 2;
+    }
+}
+template<class T>
+void Cdeque<T>::pop_front(T&n) {
+    if (ini < *ini_map + tam_nod-1) {
+        n = *ini;
+        ini++;
+    }
+    else {
+        n=*ini;
+        T* tmp = *ini_map;
+        ini_map++;
+        ini = *ini_map;
+        delete[] tmp;
+    }
+}
+template<class T>
+void Cdeque<T>::pop_back(T& n) {
+    if (fin > *fin_map) {
+        fin--;
+        n = *fin;
+    }
+    else {
+        T* tmp = *fin_map;
+        fin_map--;
+        delete[] tmp;
+        fin = *fin_map + tam_nod - 1;
+        n = *fin;
+    }
+}
+int main()
+{
+    Cdeque<int> deq1;
+    for (int i = 0;i < 10; i++)
+        deq1.push_back(i);
+    for (int i = 0;i < 5; i++)
+        deq1.pop_back(i);
+    for (int i = 0;i < 5; i++)
+        cout << deq1[i];
+}
