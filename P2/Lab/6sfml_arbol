@@ -78,10 +78,7 @@ void Inorder(nodo* nodo) {
     Inorder(nodo->nodes[1]);
 }
 
-
-
 map<int, pair<int, int>> posiciones;
-
 
 void asignarPosiciones(nodo* nodo) {
     if (nodo == nullptr) return;
@@ -132,8 +129,6 @@ void dibujarArbol(sf::RenderWindow& window, nodo* nodo, sf::Font& font) {
     window.draw(circulo);
     window.draw(text);
 }
-
-
 void mostrarArbol(Btree& arbol) {
     sf::RenderWindow window(sf::VideoMode(800, 600), "AED-sfml");
     sf::Font font;
