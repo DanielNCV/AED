@@ -1,0 +1,54 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+struct nodo {
+    nodo(int a, int naltura){
+        v = a;
+        altura = naltura;
+        nodes[0] = nodes[1] = NULL;
+    }
+    int v, altura;
+    nodo* nodes[2];
+};
+
+struct avl {
+    nodo* root=NULL;
+    bool find(nodo**& p, int n, std::vector<nodo*>& vec) {
+
+        p = &root;
+        for (;(*p)->v != n; p = &(*p)->nodes[n < (*p)->nodes[1]->v]) {
+            vec.push_back(*p);
+        }
+        if ((*p)->v == n)
+            return 1;
+        else
+            return 0;
+    }
+    void ins(int n) {
+        nodo** p;
+        std::vector<nodo*> vec;
+        if (find(p, n, vec)) {
+            *p = new nodo(n, 1);
+            int i = vec.size() - 1;
+
+            for (; vec[i]; i--) {
+
+            }
+        }
+    }
+};
+
+int main()
+{
+    vector<int> ss;
+    ss.push_back(1);
+    ss.push_back(2);
+    ss.push_back(3);
+    int i = ss.size() - 1;
+    for (; i > -1 && ss[i]!=4 ;i--) {
+        cout << ss[i];
+    }
+    if(ss[i]==3)
+        cout << ss[i];
+
+}
