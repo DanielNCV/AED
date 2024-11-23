@@ -1,54 +1,197 @@
+#include <SFML/Graphics.hpp>
 #include <iostream>
-#include <vector>
-using namespace std;
-struct nodo {
-    nodo(int a, int naltura){
-        v = a;
-        altura = naltura;
-        nodes[0] = nodes[1] = NULL;
-    }
-    int v, altura;
-    nodo* nodes[2];
+#include <cmath>
+#include <memory>
+
+struct Node {
+    int key;
+    int height;
+    Node* left;
+    Node* right;
+
+    Node(int key) : key(key), height(1), left(nullptr), right(nullptr) {}
 };
 
-struct avl {
-    nodo* root=NULL;
-    bool find(nodo**& p, int n, std::vector<nodo*>& vec) {
+class AVLTree {
+private:
+    Node* root;
 
-        p = &root;
-        for (;(*p)->v != n; p = &(*p)->nodes[n < (*p)->nodes[1]->v]) {
-            vec.push_back(*p);
+    int height(Node* n) {
+        return n ? n->height : 0;
+    }
+
+    int balanceFactor(Node* n) {
+        return n ? height(n->left) - height(n->right) : 0;
+    }
+
+    void updateHeight(Node* n) {
+        if (n)
+            n->height = 1 + std::max(height(n->left), height(n->right));
+    }
+
+    Node* rotateRight(Node* y) {
+        Node* x = y->left;
+        Node* T = x->right;
+        x->right = y;
+        y->left = T;
+        updateHeight(y);
+        updateHeight(x);
+        return x;
+    }
+
+    Node* rotateLeft(Node* x) {
+        Node* y = x->right;
+        Node* T = y->left;
+        y->left = x;
+        x->right = T;
+        updateHeight(x);
+        updateHeight(y);
+        return y;
+    }
+
+    Node* balance(Node* n) {
+        updateHeight(n);
+        int bf = balanceFactor(n);
+
+        // Left Heavy
+        if (bf > 1) {
+            if (balanceFactor(n->left) < 0)
+                n->left = rotateLeft(n->left);
+            return rotateRight(n);
         }
-        if ((*p)->v == n)
-            return 1;
+        // Right Heavy
+        if (bf < -1) {
+            if (balanceFactor(n->right) > 0)
+                n->right = rotateRight(n->right);
+            return rotateLeft(n);
+        }
+        return n;
+    }
+
+    Node* insert(Node* n, int key) {
+        if (!n) return new Node(key);
+        if (key < n->key)
+            n->left = insert(n->left, key);
+        else if (key > n->key)
+            n->right = insert(n->right, key);
         else
-            return 0;
+            return n; 
+
+        return balance(n);
     }
-    void ins(int n) {
-        nodo** p;
-        std::vector<nodo*> vec;
-        if (find(p, n, vec)) {
-            *p = new nodo(n, 1);
-            int i = vec.size() - 1;
 
-            for (; vec[i]; i--) {
+    Node* findMin(Node* n) {
+        return n->left ? findMin(n->left) : n;
+    }
 
-            }
+    Node* removeMin(Node* n) {
+        if (!n->left) return n->right;
+        n->left = removeMin(n->left);
+        return balance(n);
+    }
+
+    Node* remove(Node* n, int key) {
+        if (!n) return nullptr;
+        if (key < n->key)
+            n->left = remove(n->left, key);
+        else if (key > n->key)
+            n->right = remove(n->right, key);
+        else {
+            Node* l = n->left;
+            Node* r = n->right;
+            delete n;
+            if (!r) return l;
+            Node* min = findMin(r);
+            min->right = removeMin(r);
+            min->left = l;
+            return balance(min);
         }
+        return balance(n);
+    }
+
+    void drawNode(sf::RenderWindow& window, Node* node, int x, int y, int xOffset, int yOffset) {
+        if (!node) return;
+
+        sf::CircleShape circle(20);
+        circle.setFillColor(sf::Color::White);
+        circle.setOutlineColor(sf::Color::Black);
+        circle.setOutlineThickness(2);
+        circle.setPosition(x - 20, y - 20);
+
+        sf::Font font;
+        if (!font.loadFromFile("arial.ttf")) {
+            std::cerr << "Error\n";
+            return;
+        }
+
+        sf::Text text;
+        text.setFont(font);
+        text.setString(std::to_string(node->key));
+        text.setCharacterSize(20);
+        text.setFillColor(sf::Color::Black);
+        text.setPosition(x - 10, y - 15);
+
+        window.draw(circle);
+        window.draw(text);
+
+        if (node->left) {
+            sf::Vertex line[] = {
+                sf::Vertex(sf::Vector2f(x, y)),
+                sf::Vertex(sf::Vector2f(x - xOffset, y + yOffset))
+            };
+            window.draw(line, 2, sf::Lines);
+            drawNode(window, node->left, x - xOffset, y + yOffset, xOffset / 2, yOffset);
+        }
+        if (node->right) {
+            sf::Vertex line[] = {
+                sf::Vertex(sf::Vector2f(x, y)),
+                sf::Vertex(sf::Vector2f(x + xOffset, y + yOffset))
+            };
+            window.draw(line, 2, sf::Lines);
+            drawNode(window, node->right, x + xOffset, y + yOffset, xOffset / 2, yOffset);
+        }
+    }
+
+public:
+    AVLTree() : root(nullptr) {}
+
+    void insert(int key) {
+        root = insert(root, key);
+    }
+
+    void remove(int key) {
+        root = remove(root, key);
+    }
+
+    void draw(sf::RenderWindow& window) {
+        drawNode(window, root, 400, 50, 150, 75);
     }
 };
 
-int main()
-{
-    vector<int> ss;
-    ss.push_back(1);
-    ss.push_back(2);
-    ss.push_back(3);
-    int i = ss.size() - 1;
-    for (; i > -1 && ss[i]!=4 ;i--) {
-        cout << ss[i];
-    }
-    if(ss[i]==3)
-        cout << ss[i];
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "AVL ");
+    AVLTree tree;
+    tree.insert(4);
+    tree.insert(9);
+    tree.insert(10);
+    tree.insert(11);
+    tree.insert(12);
+    tree.insert(13);
+    tree.insert(14);
+    tree.insert(15);
 
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear(sf::Color::Black);
+        tree.draw(window); 
+        window.display();
+    }
+
+
+    return 0;
 }
